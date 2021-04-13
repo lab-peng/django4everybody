@@ -18,3 +18,10 @@ class Choice(models.Model):
     
     def __str__(self):
         return self.choice_text
+
+class Answer(models.Model):
+    question = models.ManyToManyField(Question)
+    answer_text = models.TextField()
+
+    def __str__(self):
+        return self.answer_text

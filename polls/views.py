@@ -2,13 +2,19 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 
+from django.views.generic import ListView
+
 from .models import Question, Choice
 
 
-def index(request):
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
-    context = {'latest_question_list': latest_question_list}
-    return render(request, 'polls/index.html', context)
+# def index(request):
+#     latest_question_list = Question.objects.order_by('-pub_date')[:5]
+#     context = {'latest_question_list': latest_question_list}
+#     return render(request, 'polls/index.html', context)
+
+class QuestionListView(ListView):
+    model = Question
+    template_name = 'polls/index.html'
 
 
 def owner(request):
