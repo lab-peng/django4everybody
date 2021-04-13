@@ -18,7 +18,7 @@ class QuestionListView(ListView):
 
 
 def owner(request):
-    return HttpResponse("116ce366")
+    return HttpResponse("Hello, world. 116ce366 is the polls index.")
 
 def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
