@@ -32,6 +32,8 @@ ALLOWED_HOSTS = ['django4everybody.pythonanywhere.com']
 
 INSTALLED_APPS = [
 
+
+    'autos.apps.AutosConfig',
     'hello.apps.HelloConfig',
     'home.apps.HomeConfig',
     'polls.apps.PollsConfig',
@@ -126,6 +128,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+LOGIN_REDIRECT_URL = 'autos:all'
 
 
 try:
