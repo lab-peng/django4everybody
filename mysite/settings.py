@@ -32,11 +32,15 @@ ALLOWED_HOSTS = ['django4everybody.pythonanywhere.com']
 
 INSTALLED_APPS = [
 
+    'ads.apps.AdsConfig',
     'cats.apps.CatsConfig',
     'autos.apps.AutosConfig',
     'hello.apps.HelloConfig',
     'home.apps.HomeConfig',
     'polls.apps.PollsConfig',
+
+    'crispy_forms',
+    'django.contrib.humanize',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -130,8 +134,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-LOGIN_REDIRECT_URL = 'cats:all'
-
+LOGIN_REDIRECT_URL = 'ads:all'
+APP_NAME = 'ChucksList'
 
 try:
     from .local_settings import *

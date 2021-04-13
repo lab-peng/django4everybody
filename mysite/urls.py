@@ -24,5 +24,6 @@ urlpatterns = [
     path('hello/', include('hello.urls')),
     path('autos/', include('autos.urls')),
     path('cats/', include('cats.urls')),
+    path('ads/', include('ads.urls')),
     path('', TemplateView.as_view(template_name='home/main.html')),
 ]
