@@ -6,7 +6,6 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
 from autos.models import Auto, Make
-from autos.forms import MakeForm
 
 
 class MainView(LoginRequiredMixin, View):
