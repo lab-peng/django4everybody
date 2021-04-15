@@ -7,7 +7,8 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from .models import Ad, Comment, Fav
 from .forms import CreateForm, CommentForm
-from .owner import OwnerListView, OwnerDetailView, OwnerCreateView, OwnerUpdateView, OwnerDeleteView
+from .owner import OwnerListView, OwnerDetailView, OwnerCreateView, OwnerUpdateView, OwnerDeleteView, ListView
+from django.db.models import Q
 
 
 class AdListView(OwnerListView):
@@ -24,6 +25,20 @@ class AdListView(OwnerListView):
             favorites = [ row['id'] for row in rows ]
         ctx = {'ad_list' : ad_list, 'favorites': favorites}
         return render(request, self.template_name, ctx)
+
+class SearchListView(ListView):
+    model = Ad    
+    template_name = 'ads/ad_list.html'
+
+    def get_queryset(self):
+        query = self.request.GET.get('search')
+
+        if query:
+            return Ad.objects.filter(
+                Q(title__icontains=query)| # icontains: case-insensitive; contains: case-sensitive
+                Q(text__icontains=query)
+            ).distinct()  
+        return Ad.objects.all()
 
 class AdDetailView(OwnerDetailView):
     model = Ad

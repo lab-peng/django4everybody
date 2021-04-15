@@ -22,4 +22,6 @@ urlpatterns = [
         views.AddFavoriteView.as_view(), name='ad_favorite'),
     path('ad/<int:pk>/unfavorite',
         views.DeleteFavoriteView.as_view(), name='ad_unfavorite'),
+
+    path('search/', views.SearchListView.as_view(), name='search'),
 ]
