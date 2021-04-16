@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django.contrib.humanize',
     'social_django',
+    'taggit',
 
     'django.contrib.admin',
     'django.contrib.auth',

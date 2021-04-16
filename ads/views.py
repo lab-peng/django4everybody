@@ -70,6 +70,7 @@ class AdCreateView(LoginRequiredMixin, View):
         pic = form.save(commit=False)
         pic.owner = self.request.user
         pic.save()
+        form.save_m2m()
         return redirect(self.success_url)
 
 
@@ -91,8 +92,12 @@ class AdUpdateView(LoginRequiredMixin, View):
             ctx = {'form': form}
             return render(request, self.template_name, ctx)
 
+        # pic = form.save(commit=False)
+        # pic.save()
         pic = form.save(commit=False)
+        pic.owner = self.request.user
         pic.save()
+        form.save_m2m()
 
         return redirect(self.success_url)
 
