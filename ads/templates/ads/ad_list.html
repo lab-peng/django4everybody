@@ -3,7 +3,7 @@
 <h1>Ads</h1>
 <div style="float:right">
   <!-- https://www.w3schools.com/howto/howto_css_search_button.asp -->
-  <form action="{% url 'ads:search' %}" method="GET" class="search" autocomplete="off">
+  <form>
     <input type="text" placeholder="Search.." name="search"
     {% if search %} value="{{ search }}" {% endif %}
     >

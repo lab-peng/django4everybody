@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
+from .utils import dump_queries
 from .models import Ad, Comment, Fav
 from .forms import CreateForm, CommentForm
 from .owner import OwnerListView, OwnerDetailView, OwnerCreateView, OwnerUpdateView, OwnerDeleteView, ListView
@@ -23,22 +24,45 @@ class AdListView(OwnerListView):
             rows = request.user.favorite_ads.values('id')
             # favorites = [2, 4, ...] using list comprehension
             favorites = [ row['id'] for row in rows ]
-        ctx = {'ad_list' : ad_list, 'favorites': favorites}
-        return render(request, self.template_name, ctx)
+        # ctx = {'ad_list' : ad_list, 'favorites': favorites}
 
-class SearchListView(ListView):
-    model = Ad    
-    template_name = 'ads/ad_list.html'
+        strval =  request.GET.get("search", False)
+        if strval :
+            query = Q(title__icontains=strval) 
+            query.add(Q(text__icontains=strval), Q.OR)
+            objects = Ad.objects.filter(query).select_related().order_by('-updated_at')[:10]
+        else :
+            objects = Ad.objects.all().order_by('-updated_at')[:10]
 
-    def get_queryset(self):
-        query = self.request.GET.get('search')
+        # Augment the post_list
+        # for obj in objects:
+        #     obj.natural_updated = naturaltime(obj.updated_at)
 
-        if query:
-            return Ad.objects.filter(
-                Q(title__icontains=query)| # icontains: case-insensitive; contains: case-sensitive
-                Q(text__icontains=query)
-            ).distinct()  
-        return Ad.objects.all()
+        ctx = {'ad_list' : objects, 'search': strval, 'favorites': favorites}
+        retval = render(request, self.template_name, ctx)
+
+        # dump_queries()
+        return retval
+
+
+
+
+
+
+
+# class SearchListView(ListView):
+#     model = Ad    
+#     template_name = 'ads/ad_list.html'
+
+#     def get_queryset(self):
+#         query = self.request.GET.get('search')
+
+#         if query:
+#             return Ad.objects.filter(
+#                 Q(title__icontains=query)| # icontains: case-insensitive; contains: case-sensitive
+#                 Q(text__icontains=query)
+#             ).distinct()  
+#         return Ad.objects.all()
 
 class AdDetailView(OwnerDetailView):
     model = Ad
